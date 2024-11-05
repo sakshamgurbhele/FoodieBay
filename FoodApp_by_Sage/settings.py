@@ -53,7 +53,7 @@ ROOT_URLCONF = 'FoodApp_by_Sage.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['FoodieBay/templates/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
