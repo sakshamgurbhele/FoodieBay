@@ -5,9 +5,15 @@ def home(request):
     return render(request, 'index.html')
     
 def about(request):
-    return HttpResponse("this is about section")
+    return render(request, 'about.html')
     
 def contact(request):
-    return HttpResponse("this is contact us page")
+    return render(request, 'contact.html')
+    
+def login(request):
+    return render(request, 'login.html')
+    
+def register(request):
+    return render(request, 'register.html')
     
 
