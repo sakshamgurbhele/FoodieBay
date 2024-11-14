@@ -24,9 +24,9 @@
                   <button class="btn btn-outline ms-2 me-5" type="submit"> Search </button>
                </form>
                {% if user.is_authenticated %}
-               <a class="btn btn-secondary me-2" aria-current="contact us" href="login/">Logout</a>
+               <a class="btn btn-secondary me-2" aria-current="contact us" href="/logout">Logout</a>
                {% else %}
-               <a class="btn btn-secondary me-2" aria-current="contact us" href="login/">Login</a>
+               <a class="btn btn-secondary me-2" aria-current="contact us" href="/login">Login</a>
                {% endif %}
                <a href="cart/" class="home-icon">
                <i class="bi bi-basket mx-2 text-black" style="font-size: 1.35rem"></i>
