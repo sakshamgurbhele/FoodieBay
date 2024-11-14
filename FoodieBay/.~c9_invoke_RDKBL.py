@@ -1,11 +1,8 @@
 from django.shortcuts import render, HttpResponse
-from .models import fooditem
-from django.contrib.auth import authenticate, login, logout
 
 # Create your views here.
 def home(request):
-    fooditems = fooditem.objects.all()
-    return render(request, 'index.html', {'fooditems': fooditems})
+    return render(request, 'index.html')
     
 def about(request):
     return render(request, 'about.html')
@@ -13,8 +10,8 @@ def about(request):
 def contact(request):
     return render(request, 'contact.html')
     
-def login_user(request):
-    return render(request, 'login_user.html')
+def login(request):
+    return render(request, 'login.html')
     
 def register(request):
     return render(request, 'register.html')
