@@ -14,3 +14,10 @@ class fooditem(models.Model):
     
     def __str__(self):
         return self.item_name
+
+# Contacts
+class Contact(models.Model):
+    name = models.CharField(max_length=30)
+    email = models.CharField(max_length=100)
+    message = models.TextField()
+    date = models.DateTimeField()
