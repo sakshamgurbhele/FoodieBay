@@ -2,6 +2,7 @@ from django.shortcuts import render, HttpResponse, redirect
 from .models import fooditem, Contact
 from datetime import datetime
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from django.contrib import messages
 
 # Create your views here.
@@ -10,7 +11,7 @@ def home(request):
     return render(request, 'index.html', {'fooditems': fooditems})
     
 def about(request):
-    return render(request, 'about.html')
+    return render(request, 'about.html', {})
     
 def contact(request):
     if request.method == "POST":
@@ -43,6 +44,17 @@ def logout_user(request):
     return redirect('/')
     
 def register(request):
+    if request.method == "POST":
+        email = request.POST.get('email')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        cpassword = request.POST.get('cpassword')
+        if password == cpassword:
+            user = User.objects.create(email=email, username=username, password=password)
+            user.save()
+        else: 
+            messages.success(request, ("your password didnt match"))
+    
     return render(request, 'register.html')
     
 def cart(request):
