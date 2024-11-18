@@ -13,6 +13,10 @@ def home(request):
 def about(request):
     return render(request, 'about.html', {})
     
+def product(request, pk):
+    product = fooditem.objects.get(id=pk)
+    return render(request, 'product.html', {'product': product})
+    
 def contact(request):
     if request.method == "POST":
         name = request.POST.get('name')
@@ -40,7 +44,7 @@ def login_user(request):
     
 def logout_user(request):
     logout(request)
-    messages.success(request, ("You hve been sucessfully logged out!"))
+    messages.success(request, ("You have been sucessfully logged out!"))
     return redirect('/')
     
 def register(request):
@@ -51,11 +55,12 @@ def register(request):
         cpassword = request.POST.get('cpassword')
         if password == cpassword:
             user = User.objects.create(email=email, username=username, password=password)
+            user.set_password(password)
             user.save()
+            return render(request, 'index.html')
         else: 
-            messages.success(request, ("your password didnt match"))
-    
-    return render(request, 'register.html')
+            messages.success(request, ("Your password didn't match"))
+            return render(request, 'index.html')
     
 def cart(request):
     return render(request, 'cart.html')
