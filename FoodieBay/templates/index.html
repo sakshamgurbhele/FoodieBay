@@ -54,14 +54,21 @@
    <div class="row">
       {% for fooditem in fooditems %}
          <div class="col-md-3 col-sm-6 mb-4">
-            <div class="card h-100 shadow-sm border-0 rounded">
-               <img src="{{ fooditem.image.url }}" class="card-img-top" alt="{{ fooditem.item_name }}">
+            <a href="{% url 'product' fooditem.id %}" style="text-decoration: none">
+            <div class="card h-100 shadow-sm border-0 rounded position-relative">
+               <!-- Badge Container -->
+               <div class="badge-container position-relative">
+                  <img src="{{ fooditem.image.url }}" class="card-img-top" alt="{{ fooditem.item_name }}">
+                  {% if fooditem.non_veg %}
+                     <span class="badge bg-danger position-absolute top-0 end-0 m-2">Non-Veg</span>
+                  {% else %}
+                     <span class="badge bg-success position-absolute top-0 end-0 m-2">Veg</span>
+                  {% endif %}
+               </div>
+
                <div class="card-body d-flex flex-column">
                   <div class="d-flex align-items-center">
                      <h5 class="card-title font-weight-bold mb-0">{{ fooditem.item_name }}</h5>
-                     {% if fooditem.non_veg %}
-                        <span class="non-veg-indicator ms-2"></span>
-                     {% endif %}
                   </div>
                   
                   <!-- Container for description and price with fixed height -->
@@ -71,15 +78,17 @@
                   </div>
 
                   <div class="mt-auto">
-                     <a class="btn btn-primary btn-block rounded-pill shadow-sm  ms-3" href="{% url 'product' fooditem.id %}"> Buy Now! </a>
-                     <a class="btn btn-primary btn-block rounded-pill shadow-sm ms-4" type="button">Add to Cart <i class="bi bi-cart4"></i> </a>
+                     <a class="btn btn-primary btn-block rounded-pill shadow-sm ms-3" href="{% url 'product' fooditem.id %}">Buy Now!</a>
+                     <a class="btn btn-primary btn-block rounded-pill shadow-sm ms-4" type="button">Add to Cart <i class="bi bi-cart4"></i></a>
                   </div>
                </div>
             </div>
+            </a>
          </div>
       {% endfor %}
    </div>
 </div>
+
 
 
 

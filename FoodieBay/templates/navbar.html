@@ -28,7 +28,7 @@
                {% else %}
                <a class="btn btn-secondary me-2" aria-current="contact us" href="/login">Login</a>
                {% endif %}
-               <a href="cart/" class="home-icon">
+               <a href="{% url 'cart' %}" class="home-icon">
                <i class="bi bi-basket mx-2 text-black" style="font-size: 1.35rem"></i>
                </a>
             </div>

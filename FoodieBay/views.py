@@ -62,7 +62,5 @@ def register(request):
             messages.success(request, ("Your password didn't match"))
             return render(request, 'index.html')
     
-def cart(request):
-    return render(request, 'cart.html')
     
 
