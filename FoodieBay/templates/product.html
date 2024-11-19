@@ -10,22 +10,8 @@
  
 </head>
 <body>
-    <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
-        <div class="container">
-            <a class="navbar-brand" href="/">FoodieBay</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+
+{% include 'navbar.html' %}
 
     <!-- Food Item Detail Section -->
     <div class="container my-5">
@@ -49,7 +35,7 @@
                 <!-- Buttons -->
                 <div class="mt-4">
                     <button class="btn btn-primary btn-lg rounded-pill shadow-sm me-2" type="button">Buy Now</button>
-                    <button class="btn btn-outline-secondary btn-lg rounded-pill shadow-sm" type="button" value="{{ product_id }}" id="add-cart">
+                    <button class="btn btn-outline-secondary btn-lg rounded-pill shadow-sm" type="button" data-product-id="{{ product.id }}" id="add-cart">
                         <i class="bi bi-cart"></i> Add to Cart
                     </button>
                 </div>
@@ -64,11 +50,12 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-$(document).on('click', '.add-cart', function(e) {
+$(document).on('click', '#add-cart', function(e) {
     e.preventDefault();
     console.log("Button clicked!"); // Debugging
 
     const productId = $(this).data('product-id');
+    
     
     console.log("Product ID:", productId); // Debugging
 
@@ -80,8 +67,9 @@ $(document).on('click', '.add-cart', function(e) {
             csrfmiddlewaretoken: '{{ csrf_token }}',
             action: 'post'
         },
-        success: function(response) {
-            console.log("Success:", response);
+        success: function(json) {
+            // console.log("Success:", json)
+            document.getElementById('cart_quantity').textContent = json.qty
         },
         error: function(xhr, errmsg, err) {
             console.error("Error:", xhr.status, errmsg);

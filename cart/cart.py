@@ -1,3 +1,5 @@
+from FoodieBay.models import fooditem
+
 class Cart():
     def __init__(self, request):
         self.session = request.session
@@ -26,3 +28,11 @@ class Cart():
         
     def __len__(self):
         return len(self.cart)
+        
+    def get_prods(self):
+        # get ids from the cart
+        product_ids = self.cart.keys()
+        # using id to lookup fooditems in database
+        products = fooditem.objects.filter(id__in=product_ids)
+        #return those products
+        return products

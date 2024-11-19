@@ -28,9 +28,21 @@
                {% else %}
                <a class="btn btn-secondary me-2" aria-current="contact us" href="/login">Login</a>
                {% endif %}
-               <a href="{% url 'cart' %}" class="home-icon">
-               <i class="bi bi-basket mx-2 text-black" style="font-size: 1.35rem"></i>
+               <a href="{% url 'cart' %}" class="cart-button d-flex align-items-center text-decoration-none">
+                  <div class="cart-icon-container position-relative">
+                     <i class="bi bi-basket text-black" style="font-size: 1.8rem;"></i>
+                     <span 
+                        id="cart_quantity" 
+                        class="cart-badge position-absolute top-0 start-100 translate-middle bg-success text-white rounded-circle"
+                        style="font-size: 0.75rem; width: 1.2rem; height: 1.2rem; display: flex; justify-content: center; align-items: center;"
+                     >
+                        {{cart|length}}
+                     </span>
+                  </div>
+                  <span class="cart-text ms-2 text-black fw-bold">Cart</span>
                </a>
+
+
             </div>
          </div>
       </nav>
