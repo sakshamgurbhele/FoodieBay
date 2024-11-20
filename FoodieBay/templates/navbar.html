@@ -19,14 +19,14 @@
                      <a class="nav-link active mx-2" aria-current="contact us" href="/contact">Contact</a>
                   </li>
                </ul>
-               <form class="d-flex mr-5" role="search">
-                  <input class="form-control" type="search" placeholder="what's on your mind?🤤" aria-label="Search">
-                  <button class="btn btn-outline ms-2 me-5" type="submit"> Search </button>
-               </form>
+               <!--<form class="d-flex mr-5" role="search">-->
+               <!--   <input class="form-control" type="search" placeholder="what's on your mind?🤤" aria-label="Search">-->
+               <!--   <button class="btn btn-outline ms-2 me-5" type="submit"> Search </button>-->
+               <!--</form>-->
                {% if user.is_authenticated %}
-               <a class="btn btn-secondary me-2" aria-current="contact us" href="/logout">Logout</a>
+               <a class="btn btn-secondary me-3" aria-current="contact us" href="/logout">Logout</a>
                {% else %}
-               <a class="btn btn-secondary me-2" aria-current="contact us" href="/login">Login</a>
+               <a class="btn btn-secondary me-3" aria-current="contact us" href="/login">Login</a>
                {% endif %}
                <a href="{% url 'cart' %}" class="cart-button d-flex align-items-center text-decoration-none">
                   <div class="cart-icon-container position-relative">
@@ -39,7 +39,7 @@
                         {{cart|length}}
                      </span>
                   </div>
-                  <span class="cart-text ms-2 text-black fw-bold">Cart</span>
+                  <span class="cart-text ms-2 text-black fw-bold"></span>
                </a>
 
 

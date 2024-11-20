@@ -61,6 +61,6 @@ def register(request):
         else: 
             messages.success(request, ("Your password didn't match"))
             return render(request, 'index.html')
-    
+    return render(request, 'register.html')
     
 

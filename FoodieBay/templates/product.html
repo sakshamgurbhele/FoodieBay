@@ -30,7 +30,18 @@
                     <span class="badge bg-success">Veg</span>
                 {% endif %}
                 <p class="lead mt-3 text-muted">{{ product.description }}</p>
-                <h3 class="text-primary font-weight-bold">${{ product.price }}</h3>
+                <h3 class="text-primary font-weight-bold">€ {{ product.price }}</h3>
+                
+                <div class="ms-1 mt-4" style="width: 80px;">
+                        <select class="form-select" id="qty-cart">
+                          <option selected>Qty</option>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                        </select>
+                    </div>
 
                 <!-- Buttons -->
                 <div class="mt-4">
@@ -64,6 +75,7 @@ $(document).on('click', '#add-cart', function(e) {
         url: '{% url "cart_add" %}',
         data: {
             product_id: productId,
+            product_qty: $('#qty-cart option:selected').text(), 
             csrfmiddlewaretoken: '{{ csrf_token }}',
             action: 'post'
         },
