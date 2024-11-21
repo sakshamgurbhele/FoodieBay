@@ -143,9 +143,9 @@
                                                 <h3><p class="mb-2">Total (Incl. taxes)</p></h3>
                                                 <h3><strong><p class="mb-2">€ {{ totals }}</p></strong></h3>
                                             </div>
-                                            <button type="button" class="btn btn-info btn-block btn-lg">
+                                            <button type="button" class="btn btn-info btn-block btn-lg" onclick="window.location.href = '/order_confirmation'">
                                                 <div class="d-flex justify-content-between">
-                                                    <span>Checkout <i class="fas fa-long-arrow-alt-right ms-2"></i></span>
+                                                    <a href="{% url 'checkout' %}" class="fas fa-long-arrow-alt-right ms-2">Proceed to Checkout</a>
                                                 </div>
                                             </button>
                                         </div>

@@ -28,6 +28,10 @@ class Cart():
             
         self.session.modified = True
         
+        
+        
+        
+        
     def __len__(self):
         return len(self.cart)
         
@@ -63,6 +67,9 @@ class Cart():
             for product in products:
                 if product.id == key:
                     total = total + (product.price * value)
+        
+        # self.cart[total] = int(total)
+        # self.session.modified = True
         
         return total
         

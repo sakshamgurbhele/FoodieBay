@@ -19,7 +19,7 @@ def cart(request):
     #     'quantity': quantity,
     #     'quantity_range': list(range(1, 11))  # Pass the range here
     # }
-    return render(request, 'cart.html', {"cart_products": cart_products, "cart_total": cart_total, "quantity":quantity, "totals":totals})
+    return render(request, 'cart.html', {"cart_products": cart_products, "cart_total": cart_total, "quantity":quantity, "totals": totals})
 
 def cart_add(request):
 #     #get the cart
