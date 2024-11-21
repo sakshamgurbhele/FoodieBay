@@ -72,6 +72,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'FoodApp_by_Sage.wsgi.application'
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases

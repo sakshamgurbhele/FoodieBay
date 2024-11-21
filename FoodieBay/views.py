@@ -1,9 +1,13 @@
 from django.shortcuts import render, HttpResponse, redirect
-from .models import fooditem, Contact
+from .models import fooditem, Contact, Order
 from datetime import datetime
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
+from cart.cart import Cart
+from django.shortcuts import get_object_or_404
+from django.contrib.auth.decorators import login_required, user_passes_test
+
 
 # Create your views here.
 def home(request):
@@ -62,5 +66,51 @@ def register(request):
             messages.success(request, ("Your password didn't match"))
             return render(request, 'index.html')
     return render(request, 'register.html')
+    
+def checkout(request):
+    cart = Cart(request)  # Initialize the cart
+    cart_products = cart.cart  # Get all items in the cart
+    cart_total = cart.get_total()  # Calculate the total price
+
+    # Ensure the cart is not empty
+    if not cart_products:
+        messages.error(request, "Your cart is empty.")
+        return redirect('cart')
+
+    # Prepare items data for the JSONField
+    items_data = [
+        {
+            'product_id': int(product_id),
+            'product_name': fooditem.objects.get(id=int(product_id)).item_name,
+            'price': str(fooditem.objects.get(id=int(product_id)).price),
+            'quantity': quantity,
+        }
+        for product_id, quantity in cart_products.items()
+    ]
+
+    # Save the order to the database
+    new_order = Order.objects.create(
+        items=items_data,
+        total_price=cart_total
+    )
+
+    # Clear the cart after successful order placement
+    cart.cart.clear()  # Clear the cart dictionary
+    request.session['session_key'] = {}  # Clear session cart
+    request.session.modified = True
+
+    # Redirect to the order confirmation page with the new order ID
+    return redirect('order_confirmation', order_id=new_order.order_id)
+    
+
+def order_confirmation(request, order_id):
+    order = get_object_or_404(Order, order_id=order_id)
+    return render(request, 'order_confirmation.html', {'order': order})
+  
+ 
+def dashboard(request):
+    order = Order.objects.all()
+    return render(request, 'dashboard.html', {'orders': order})
+
     
 
