@@ -19,6 +19,9 @@
                      <a class="nav-link active mx-2" aria-current="contact us" href="/contact">Contact</a>
                   </li>
                </ul>
+               {% if user.is_superuser %}
+                   <a href="{% url 'dashboard' %}" class="btn btn-primary me-4">Admin Dashboard</a>
+               {% endif %}
                <!--<form class="d-flex mr-5" role="search">-->
                <!--   <input class="form-control" type="search" placeholder="what's on your mind?🤤" aria-label="Search">-->
                <!--   <button class="btn btn-outline ms-2 me-5" type="submit"> Search </button>-->
