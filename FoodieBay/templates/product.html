@@ -61,34 +61,70 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    // Add to cart Functionality
+
+// Add to cart Functionality
 $(document).on('click', '#add-cart', function(e) {
     e.preventDefault();
     console.log("Button clicked!"); // Debugging
 
     const productId = $(this).data('product-id');
-    
+    const productQty = $('#qty-cart option:selected').text(); // Get selected quantity
     
     console.log("Product ID:", productId); // Debugging
 
     $.ajax({
         type: 'POST',
-        url: '{% url "cart_add" %}',
+        url: '{% url "cart_add" %}',  // Add item to the cart
         data: {
             product_id: productId,
-            product_qty: $('#qty-cart option:selected').text(), 
+            product_qty: productQty,
             csrfmiddlewaretoken: '{{ csrf_token }}',
             action: 'post'
         },
         success: function(json) {
-            // console.log("Success:", json)
-            document.getElementById('cart_quantity').textContent = json.qty
+            // Update the cart quantity display
+            document.getElementById('cart_quantity').textContent = json.qty;
+            alert('Item added to cart successfully!');
         },
         error: function(xhr, errmsg, err) {
             console.error("Error:", xhr.status, errmsg);
         }
     });
 });
+
+// Update Cart Quantity Functionality
+$(document).on('change', '.cart-quantity-input', function(e) {
+    e.preventDefault();
+    const productId = $(this).data('product-id');  // Get product ID from the data attribute
+    const newQty = $(this).val();  // Get the new quantity value
+    
+    if (newQty < 1) {
+        alert("Quantity must be at least 1.");
+        $(this).val(1);  // Reset the value to 1
+        return;
+    }
+
+    $.ajax({
+        type: 'POST',
+        url: '{% url "cart_update" %}',  // Update cart item quantity
+        data: {
+            product_id: productId,
+            product_qty: newQty,
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            action: 'update'
+        },
+        success: function(json) {
+            // Update the cart total and quantity display
+            document.getElementById('cart_quantity').textContent = json.qty;
+            document.getElementById('cart_total').textContent = '€' + json.total;
+            alert(json.message);  // Optional: Show a success message
+        },
+        error: function(xhr, errmsg, err) {
+            console.error("Error:", xhr.status, errmsg);
+        }
+    });
+});
+
 // Buy Button Function
 $(document).on('click', '#buy', function(e) {
     e.preventDefault();

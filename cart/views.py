@@ -65,5 +65,6 @@ def cart_delete(request):
         response = JsonResponse({'product': product_id})
         return response
 
+
 def cart_update(request):
-    return 
+    return request

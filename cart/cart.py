@@ -10,26 +10,23 @@ class Cart():
         #if the user if new, NO-session-key
         if 'session_key' not in request.session:
             cart = self.session['session_key'] = {}
-            
-        
+
         #make cart availble to all pages of app
         self.cart = cart
         
-    def add (self, product, quantity):
+    def add(self, product, quantity):
         product_id = str(product.id)
-        product_qty = str(quantity)
+        product_qty = int(quantity)
         
         #logic
         if product_id in self.cart:
-            pass
+            self.cart[product_id] = int(product_qty)
+            # pass
         else:
             # self.cart[product_id] = {'price': str(product.price)}
             self.cart[product_id] = int(product_qty)
             
         self.session.modified = True
-        
-        
-        
         
         
     def __len__(self):
@@ -49,14 +46,13 @@ class Cart():
         
     def delete(self, product):
         product_id = str(product)
-        #delete from the dictinory cart 
+            #delete from the dictinory cart 
         if product_id in self.cart:
             del self.cart[product_id]
-            
         self.session.modified = True
     
     def get_total(self):
-       
+           
         product_ids = self.cart.keys()
         products = fooditem.objects.filter(id__in=product_ids)
         quantities = self.cart
@@ -69,7 +65,12 @@ class Cart():
                     total = total + (product.price * value)
         
         # self.cart[total] = int(total)
-        # self.session.modified = True
-        
+        self.session.modified = True
         return total
+        
+    # # def save(self):
+    #     """ Save cart back to session or database (depending on implementation) """
+    #     session = self.session
+    #     session['cart'] = self.cart
+    #     session.modified = True
         
