@@ -7,6 +7,10 @@ from django.contrib import messages
 from cart.cart import Cart
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django import forms
+from .forms import FooditemForm
+from django.http import JsonResponse
+
 
 
 # Create your views here.
@@ -106,11 +110,55 @@ def checkout(request):
 def order_confirmation(request, order_id):
     order = get_object_or_404(Order, order_id=order_id)
     return render(request, 'order_confirmation.html', {'order': order})
+    
+def access_denied(request):
+    return render(request, 'access_denied.html')
   
- 
+@login_required
+@user_passes_test(lambda user: user.is_superuser, login_url='access-denied/')
 def dashboard(request):
     order = Order.objects.all()
-    return render(request, 'dashboard.html', {'orders': order})
+    contact = Contact.objects.all()
+    return render(request, 'dashboard.html', {'orders': order, 'contacts':contact})
 
+
+def add_item(request):
+    if request.method == "POST":
+        # Get data from the request
+        item_name = request.POST.get("item_name")
+        description = request.POST.get("description")
+        price = request.POST.get("price")
+        non_veg = request.POST.get("non_veg") == "true"  # Handle boolean conversion
+        image = request.FILES.get("image")  # Handle file uploads
+
+        # Validate fields
+        if not item_name or not description or not price:
+            return JsonResponse({"success": False, "error": "Missing fields"})
+
+        # Create the item
+        new_item = fooditem.objects.create(
+            item_name=item_name,
+            description=description,
+            price=price,
+            image=image,
+            non_veg=non_veg,
+        )
+        return JsonResponse({"success": True, "item_id": new_item.id})
+    return JsonResponse({"success": False, "error": "Invalid request method"})
     
+@login_required
+@user_passes_test(lambda user: user.is_superuser, login_url='access-denied/')
+def order_details(request):
+    order = Order.objects.all()
+    return render(request, 'order_details.html', {'orders': order})
 
+@login_required
+@user_passes_test(lambda user: user.is_superuser, login_url='access-denied/')
+def contact_queries(request):
+    contact = Contact.objects.all()
+    return render(request, 'contact_queries.html', {'contacts': contact})
+
+@login_required
+@user_passes_test(lambda user: user.is_superuser, login_url='access-denied/')
+def add_fooditem(request):
+    return render(request, 'add_fooditem.html')

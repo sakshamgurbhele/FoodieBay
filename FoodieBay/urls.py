@@ -16,4 +16,9 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'),
     path('checkout/', views.checkout, name='checkout'),
     path('order-confirmation/<uuid:order_id>/', views.order_confirmation, name='order_confirmation'),
+    path('access-denied/', views.access_denied),
+    path('add-item/', views.add_item, name='add_item'),
+    path('order-details/', views.order_details, name='order_details'),
+    path('contact-queries/', views.contact_queries, name='contact_queries'),
+    path('add-fooditem/', views.add_fooditem, name='add_fooditem')
 ]

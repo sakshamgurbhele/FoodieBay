@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Add Food Item</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+
+    .form-container {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 20px 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-title {
+      color: #007bff;
+      font-weight: bold;
+    }
+
+    .btn-submit {
+      background-color: #007bff;
+      color: white;
+      font-size: 1.1rem;
+      font-weight: bold;
+      border-radius: 25px;
+      padding: 10px 20px;
+    }
+
+    .btn-submit:hover {
+      background-color: #0056b3;
+    }
+
+    .form-label {
+      font-weight: bold;
+    }
+
+    .form-check-label {
+      font-size: 0.95rem;
+    }
+
+    .alert-placeholder {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  {% include 'navbar.html' %}
+
+  <div class="container mt-5">
+    <div class="form-container">
+      <h1 class="text-center form-title mb-4">Add Food Item</h1>
+      <div class="alert alert-success alert-placeholder text-center" role="alert">
+        Item added successfully!
+      </div>
+      <form id="add-item-form" enctype="multipart/form-data" method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="item_name" class="form-label">Item Name</label>
+          <input type="text" class="form-control" id="item_name" name="item_name" placeholder="Enter food item name" required>
+        </div>
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter a short description" required></textarea>
+        </div>
+        <div class="mb-3">
+          <label for="price" class="form-label">Price (€)</label>
+          <input type="number" step="0.01" class="form-control" id="price" name="price" placeholder="Enter price" required>
+        </div>
+        <div class="mb-3">
+          <label for="image" class="form-label">Upload Image</label>
+          <input type="file" class="form-control" id="image" name="image" accept="image/*">
+        </div>
+        <div class="mb-3 form-check">
+          <input type="checkbox" class="form-check-input" id="non_veg" name="non_veg">
+          <label class="form-check-label" for="non_veg">Mark as Non-Veg</label>
+        </div>
+        <button type="submit" class="btn btn-submit w-100">Add Item</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.getElementById("add-item-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const form = e.target;
+      const formData = new FormData(form);
+
+      fetch("/add-item/", {
+        method: "POST",
+        body: formData,
+        headers: {
+          "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value,
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          const alertPlaceholder = document.querySelector('.alert-placeholder');
+          if (data.success) {
+            alertPlaceholder.classList.remove('d-none');
+            alertPlaceholder.style.display = 'block';
+            alertPlaceholder.textContent = "Item added successfully!";
+            form.reset();
+          } else {
+            alert("Error: " + (data.error || "Unknown error occurred"));
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          alert("An unexpected error occurred.");
+        });
+    });
+  </script>
+</body>
+</html>
