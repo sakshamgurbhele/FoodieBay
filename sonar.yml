@@ -7,15 +7,23 @@ phases:
     commands:
       - yum update -y
       - yum install -y jq
-      - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.8.0.2856-linux.zip
-      - unzip sonar-scanner-cli-4.8.0.2856-linux.zip
-      - export PATH=$PATH:./sonar-scanner-4.8.0.2856-linux/bin/
+      # Install newer version of sonar-scanner
+      - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+      - unzip sonar-scanner-cli-5.0.1.3006-linux.zip
+      - export PATH=$PATH:./sonar-scanner-5.0.1.3006-linux/bin/
   pre_build:
     commands:
-      - sonar-scanner -Dsonar.organization=sakshamgurbhele -Dsonar.projectKey=sakshamgurbhele_foodiebay -Dsonar.sources=. -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=96d8fb8844151c3650a3915fe10e4eae32d5e9c4 -Dsonar.python.version=3.11 -Dsonar.exclusions=**/migrations/**,**/*.pyc,**/venv/**,**/__pycache__/**
-      - sleep 5
-      - curl https://sonarcloud.io/api/qualitygates/project_status?projectKey=sakshamgurbhele_foodiebay > analysis.json
-      - cat analysis.json
+      - java -version
+      - sonar-scanner \
+        -Dsonar.organization=sakshamgurbhele \
+        -Dsonar.projectKey=sakshamgurbhele_foodiebay \
+        -Dsonar.sources=. \
+        -Dsonar.host.url=https://sonarcloud.io \
+        -Dsonar.login=96d8fb8844151c3650a3915fe10e4eae32d5e9c4 \
+        -Dsonar.python.version=3.11 \
+        -Dsonar.language=py \
+        -Dsonar.java.binaries=. \
+        -Dsonar.exclusions=**/migrations/**,**/*.pyc,**/venv/**,**/__pycache__/**
   build:
     commands:
       - echo Building Django Project
