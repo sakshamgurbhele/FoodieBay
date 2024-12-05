@@ -102,9 +102,15 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+# Add CSRF trusted origins for your EB domain
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.elasticbeanstalk.com',
+    'http://*.elasticbeanstalk.com',
+]
 
-CSRF_TRUSTED_ORIGINS=['https://x23266724-foodiebay-env.eba-pqpfb2km.eu-west-1.elasticbeanstalk.com']
-
+# Session and auth settings
+SESSION_COOKIE_SECURE = False  # Set to True if using HTTPS
+CSRF_COOKIE_SECURE = False    # Set to True if using HTTPS
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
