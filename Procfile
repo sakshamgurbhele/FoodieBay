@@ -1,1 +1,0 @@
-web: gunicorn --bind unix:///var/run/gunicorn.sock FoodApp_by_Sage.wsgi:application
