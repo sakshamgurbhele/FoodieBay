@@ -106,6 +106,7 @@ AUTH_PASSWORD_VALIDATORS = [
 CSRF_TRUSTED_ORIGINS = [
     'https://*.elasticbeanstalk.com',
     'http://*.elasticbeanstalk.com',
+    'https://855250153f8445c8b3bc0192476f9bf6.vfs.cloud9.eu-west-1.amazonaws.com'
 ]
 
 # Session and auth settings
