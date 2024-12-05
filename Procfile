@@ -1,0 +1,1 @@
+web: gunicorn --bind 0.0.0.0:8000 FoodApp_by_Sage.wsgi:application
