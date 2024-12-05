@@ -1,0 +1,60 @@
+.card {
+   transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+   transform: scale(1.05);
+   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-title {
+   font-family: 'Poppins', sans-serif;
+   font-weight: 600;
+}
+
+.card-text.strike {
+   text-decoration: line-through;
+   color: #888;
+}
+
+.btn-primary {
+   background-color: #007bff;
+   border: none;
+   font-weight: bold;
+}
+
+.btn-primary:hover {
+   background-color: #0056b3;
+   color: white;
+}
+
+/* Ensures consistent space for description and price */
+.description-container {
+   min-height: 100px; /* Set a fixed height to ensure consistency */
+   display: flex;
+   flex-direction: column;
+   justify-content: space-between;
+}
+
+.description {
+   margin-bottom: 10px;
+   overflow: hidden;
+   text-overflow: ellipsis;
+}
+
+.price {
+   font-size: 1.2rem;
+   font-weight: bold;
+   color: #007bff;
+   margin: 0;
+}
+/* Small red dot for non-veg indicator */
+.non-veg-indicator {
+   width: 10px;
+   height: 10px;
+   background-color: red;
+   border-radius: 50%;
+   display: inline-block;
+   margin-left: 5px;
+}
+
