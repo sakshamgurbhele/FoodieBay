@@ -2,10 +2,11 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      python: 3.9    # Changed from nodejs to python
+      python: 3.11
     commands:
-      - apt-get update
-      - apt-get install -y jq
+      # Using yum instead of apt-get for Amazon Linux 2
+      - yum update -y
+      - yum install -y jq
       - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.3.0.1492-linux.zip
       - unzip ./sonar-scanner-cli-3.3.0.1492-linux.zip
       - export PATH=$PATH:./sonar-scanner-3.3.0.1492-linux/bin/
@@ -21,4 +22,4 @@ phases:
       - echo Finished Building
 cache:
   paths:
-    - '.sonar/**/*'    # Changed from node_modules to .sonar
+    - '.sonar/**/*'
