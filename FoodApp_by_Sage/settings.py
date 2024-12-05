@@ -106,12 +106,15 @@ AUTH_PASSWORD_VALIDATORS = [
 CSRF_TRUSTED_ORIGINS = [
     'https://*.elasticbeanstalk.com',
     'http://*.elasticbeanstalk.com',
-    'https://855250153f8445c8b3bc0192476f9bf6.vfs.cloud9.eu-west-1.amazonaws.com'
+    'https://855250153f8445c8b3bc0192476f9bf6.vfs.cloud9.eu-west-1.amazonaws.com',
+    'http://x23266724-foodiebay-env.eba-pqpfb2km.eu-west-1.elasticbeanstalk.com',
+    'https://x23266724-foodiebay-env.eba-pqpfb2km.eu-west-1.elasticbeanstalk.com'
 ]
-
 # Session and auth settings
-SESSION_COOKIE_SECURE = False  # Set to True if using HTTPS
-CSRF_COOKIE_SECURE = False    # Set to True if using HTTPS
+SESSION_COOKIE_NAME = 'sessionid'
+SESSION_COOKIE_AGE = 1209600  # 2 weeks in seconds
+SESSION_COOKIE_DOMAIN = None
+SESSION_COOKIE_HTTPONLY = True
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
