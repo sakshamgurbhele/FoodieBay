@@ -21,10 +21,6 @@ class Cart():
         #logic
         if product_id in self.cart:
             self.cart[product_id] = int(product_qty)
-            # pass
-        else:
-            # self.cart[product_id] = {'price': str(product.price)}
-            self.cart[product_id] = int(product_qty)
             
         self.session.modified = True
         
@@ -56,7 +52,8 @@ class Cart():
         product_ids = self.cart.keys()
         products = fooditem.objects.filter(id__in=product_ids)
         quantities = self.cart
-        #total
+        
+        
         total = 0
         for key, value in quantities.items():
             key = int(key)
@@ -64,13 +61,7 @@ class Cart():
                 if product.id == key:
                     total = total + (product.price * value)
         
-        # self.cart[total] = int(total)
         self.session.modified = True
         return total
-        
-    # # def save(self):
-    #     """ Save cart back to session or database (depending on implementation) """
-    #     session = self.session
-    #     session['cart'] = self.cart
-    #     session.modified = True
+
         
