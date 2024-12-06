@@ -877,6 +877,8 @@ a.deletelink:focus, a.deletelink:hover {
     width: 260px;
     position: relative;
     margin-right: -300px;
+    background: var(--darkened-bg);
+    
 }
 
 #footer {
@@ -999,10 +1001,6 @@ a.deletelink:focus, a.deletelink:hover {
 }
 
 /* SIDEBAR */
-
-#content-related {
-    background: var(--darkened-bg);
-}
 
 #content-related .module {
     background: none;

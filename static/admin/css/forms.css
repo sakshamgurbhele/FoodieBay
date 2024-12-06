@@ -284,10 +284,6 @@ body.popup .submit-row {
 }
 
 .submit-row a.deletelink {
-    margin-left: auto;
-}
-
-.submit-row a.deletelink {
     display: block;
     background: var(--delete-button-bg);
     border-radius: 4px;
@@ -295,6 +291,7 @@ body.popup .submit-row {
     height: 0.9375rem;
     line-height: 0.9375rem;
     color: var(--button-fg);
+    margin-left: auto;
 }
 
 .submit-row a.closelink {
