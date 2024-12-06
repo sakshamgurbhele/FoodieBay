@@ -13,10 +13,10 @@
                      <a class="nav-link active mx-2" aria-current="page" href="/">Home</a>
                   </li>
                   <li class="nav-item">
-                     <a class="nav-link active mx-2" aria-current="about us" href="/about">About</a>
+                     <a class="nav-link active mx-2" aria-current="about" href="/about">About</a>
                   </li>
                   <li class="nav-item">
-                     <a class="nav-link active mx-2" aria-current="contact us" href="/contact">Contact</a>
+                     <a class="nav-link active mx-2" aria-current="contact" href="/contact">Contact</a>
                   </li>
                </ul>
                {% if user.is_superuser %}
@@ -27,9 +27,9 @@
                <!--   <button class="btn btn-outline ms-2 me-5" type="submit"> Search </button>-->
                <!--</form>-->
                {% if user.is_authenticated %}
-               <a class="btn btn-secondary me-3" aria-current="contact us" href="/logout">Logout</a>
+               <a class="btn btn-secondary me-3" href="/logout">Logout</a>
                {% else %}
-               <a class="btn btn-secondary me-3" aria-current="contact us" href="/login">Login</a>
+               <a class="btn btn-secondary me-3" href="/login">Login</a>
                {% endif %}
                <a href="{% url 'cart' %}" class="cart-button d-flex align-items-center text-decoration-none">
                   <div class="cart-icon-container position-relative">
