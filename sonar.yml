@@ -5,13 +5,15 @@ phases:
       python: 3.9
       java: corretto17
     commands:
-      - pip install coverage pytest
+      - pip install -r requirements.txt
+      - pip install coverage pytest pytest-django
       - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
       - unzip sonar-scanner-cli-5.0.1.3006-linux.zip
       - export PATH=$PATH:./sonar-scanner-5.0.1.3006-linux/bin/
   pre_build:
     commands:
-      - coverage run -m pytest
+      - python manage.py collectstatic --noinput
+      - coverage run manage.py test
       - coverage xml -i
       - sonar-scanner -Dsonar.organization=sakshamgurbhele -Dsonar.projectKey=sakshamgurbhele_foodiebay -Dsonar.sources=. -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=96d8fb8844151c3650a3915fe10e4eae32d5e9c4 -Dsonar.python.version=3.11 -Dsonar.exclusions=**/migrations/**,**/*.pyc,**/venv/**,**/__pycache__/** -Dsonar.python.coverage.reportPaths=coverage.xml
   build:
