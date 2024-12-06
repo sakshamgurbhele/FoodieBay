@@ -12,7 +12,6 @@ from .forms import FooditemForm
 from django.http import JsonResponse
 
 
-
 # Create your views here.
 def home(request):
     fooditems = fooditem.objects.all()
