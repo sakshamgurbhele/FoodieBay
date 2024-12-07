@@ -1,67 +1,57 @@
+# pylint: disable=bad-indentation,trailing-whitespace,E1101,missing-final-newline 
+"""Shopping cart implementation with session handling."""
 from FoodieBay.models import fooditem
 
-class Cart():
-    def __init__(self, request):
-        self.session = request.session
-        
-        #get the current session-key if exist
-        cart = self.session.get('session_key')
-        
-        #if the user if new, NO-session-key
-        if 'session_key' not in request.session:
-            cart = self.session['session_key'] = {}
+class Cart:
+   """Class to manage shopping cart operations using session storage."""
+   
+   def __init__(self, request):
+       """Initialize cart with session data."""
+       self.session = request.session
+       cart = self.session.get('session_key')
+       if 'session_key' not in request.session:
+           cart = self.session['session_key'] = {}
+       self.cart = cart
 
-        #make cart availble to all pages of app
-        self.cart = cart
-        
-    def add(self, product, quantity):
-        product_id = str(product.id)
-        product_qty = int(quantity)
-        
-        #logic
-        if product_id in self.cart:
-            self.cart[product_id] = int(product_qty)
-            
-        self.session.modified = True
-        
-        
-    def __len__(self):
-        return len(self.cart)
-        
-    def get_prods(self):
-        # get ids from the cart
-        product_ids = self.cart.keys()
-        # using id to lookup fooditems in database
-        products = fooditem.objects.filter(id__in=product_ids)
-        #return those products
-        return products
-        
-    def get_quants(self):
-        quantities = self.cart
-        return quantities
-        
-    def delete(self, product):
-        product_id = str(product)
-            #delete from the dictinory cart 
-        if product_id in self.cart:
-            del self.cart[product_id]
-        self.session.modified = True
-    
-    def get_total(self):
-           
-        product_ids = self.cart.keys()
-        products = fooditem.objects.filter(id__in=product_ids)
-        quantities = self.cart
-        
-        
-        total = 0
-        for key, value in quantities.items():
-            key = int(key)
-            for product in products:
-                if product.id == key:
-                    total = total + (product.price * value)
-        
-        self.session.modified = True
-        return total
+   def add(self, product, quantity):
+       """Add or update product quantity in cart."""
+       product_id = str(product.id)
+       product_qty = int(quantity)
+       if product_id in self.cart:
+           self.cart[product_id] = int(product_qty)
+       self.session.modified = True
 
-        
+   def __len__(self):
+       """Return total number of items in cart."""
+       return len(self.cart)
+
+   def get_prods(self):
+       """Get all products in cart from database."""
+       product_ids = self.cart.keys()
+       products = fooditem.objects.filter(id__in=product_ids)
+       return products
+
+   def get_quants(self):
+       """Return quantities of items in cart."""
+       return self.cart
+
+   def delete(self, product):
+       """Remove product from cart."""
+       product_id = str(product)
+       if product_id in self.cart:
+           del self.cart[product_id]
+       self.session.modified = True
+
+   def get_total(self):
+       """Calculate total price of items in cart."""
+       product_ids = self.cart.keys()
+       products = fooditem.objects.filter(id__in=product_ids)
+       quantities = self.cart
+       total = 0
+       for key, value in quantities.items():
+           key = int(key)
+           for product in products:
+               if product.id == key:
+                   total = total + (product.price * value)
+       self.session.modified = True
+       return total

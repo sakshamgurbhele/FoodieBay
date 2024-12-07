@@ -1,3 +1,5 @@
+# pylint: disable=unused-import
+"""Create your URL ROUTES here."""
 from django.contrib import admin
 from django.urls import path
 from .import views

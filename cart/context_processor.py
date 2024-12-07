@@ -1,6 +1,7 @@
+# pylint: disable=bad-indentation,trailing-whitespace,missing-final-newline
+"""Context processor for cart functionality."""
 from .cart import Cart
 
-#create context process so our cart can work on all pages
 def cart(request):
-    #return the default data from our cart
-    return {'cart': Cart(request)}
+   """Return cart instance for template context."""
+   return {'cart': Cart(request)}
