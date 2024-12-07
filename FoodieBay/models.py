@@ -1,13 +1,16 @@
-from django.db import models
+# pylint: disable=bad-indentation,trailing-whitespace,missing-final-newline,unused-import,invalid-str-returned,invalid-name
+"""Create your models here."""
 import datetime
-from django.utils.timezone import now
 import uuid
+from django.utils.timezone import now
+from django.db import models
 
 
-# Create your models here.
 
-# Fooditems
+
+
 class fooditem(models.Model):
+    """Fooditems define"""
     item_name = models.CharField(max_length=30)
     description = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=4, default=0, decimal_places=2)
@@ -17,15 +20,17 @@ class fooditem(models.Model):
     def __str__(self):
         return self.item_name
 
-# Contacts
+
 class Contact(models.Model):
+    """Contacts"""
     name = models.CharField(max_length=30)
     email = models.CharField(max_length=100)
     message = models.TextField()
     date = models.DateTimeField()
 
-# Order Ids
+
 class Order(models.Model):
+    """Order Ids"""
     order_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     created_at = models.DateTimeField(default=now, editable=False)
     items = models.JSONField()  # Stores cart items in JSON format

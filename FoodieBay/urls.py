@@ -1,3 +1,5 @@
+# pylint: disable=bad-indentation,trailing-whitespace,line-too-long
+"""Url routes are defined here"""
 from django.contrib import admin
 from django.urls import path
 from FoodieBay import views

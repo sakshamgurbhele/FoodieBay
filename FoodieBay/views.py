@@ -1,86 +1,86 @@
-from django.shortcuts import render, HttpResponse, redirect
-from .models import fooditem, Contact, Order
+# pylint: disable=bad-indentation,no-member
+"""Views for handling web application functionality."""
 from datetime import datetime
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
-from cart.cart import Cart
-from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django import forms
-from .forms import FooditemForm
 from django.http import JsonResponse
+from cart.cart import Cart
+from .models import fooditem, Contact, Order
 
-
-# Create your views here.
 def home(request):
+    """Render homepage with all food items."""
     fooditems = fooditem.objects.all()
     return render(request, 'index.html', {'fooditems': fooditems})
-    
+
 def about(request):
+    """Render about page."""
     return render(request, 'about.html', {})
-    
+
 def product(request, pk):
-    product = fooditem.objects.get(id=pk)
-    return render(request, 'product.html', {'product': product})
-    
+    """Display individual product details."""
+    item = fooditem.objects.get(id=pk)
+    return render(request, 'product.html', {'product': item})
+
 def contact(request):
+    """Handle contact form submissions."""
     if request.method == "POST":
         name = request.POST.get('name')
         email = request.POST.get('emailAddress')
         message = request.POST.get('message')
-        contact = Contact(name=name, email=email, message=message, date=datetime.today())
-        contact.save()
-        messages.success(request, ("Your Query was Register!"))
+        contact_entry = Contact(name=name, email=email, message=message, date=datetime.today())
+        contact_entry.save()
+        messages.success(request, "Your Query was Register!")
     return render(request, 'contact.html')
-    
+
 def login_user(request):
+    """Handle user login."""
     if request.method == "POST":
         username = request.POST.get('Username')
         password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            messages.success(request, ("You have been logged In!!!"))
+            messages.success(request, "You have been logged In!")
             return redirect('/')
-        else:
-            messages.success(request, ("There was an error, try again :)"))
-            return redirect('/')
-    else:
-        return render(request, 'login_user.html')
-    
+        messages.success(request, "There was an error, try again :)")
+        return redirect('/')
+    return render(request, 'login_user.html')
+
 def logout_user(request):
+    """Handle user logout."""
     logout(request)
-    messages.success(request, ("You have been sucessfully logged out!"))
+    messages.success(request, "You have been sucessfully logged out!")
     return redirect('/')
-    
+
 def register(request):
+    """Handle user registration."""
     if request.method == "POST":
         email = request.POST.get('email')
         username = request.POST.get('username')
         password = request.POST.get('password')
         cpassword = request.POST.get('cpassword')
         if password == cpassword:
-            user = User.objects.create(email=email, username=username, password=password)
+            user = User.objects.create(email=email, username=username)
             user.set_password(password)
             user.save()
             return render(request, 'index.html')
-        else: 
-            messages.success(request, ("Your password didn't match"))
-            return render(request, 'index.html')
+        messages.success(request, "Your password didn't match")
+        return render(request, 'index.html')
     return render(request, 'register.html')
-    
-def checkout(request):
-    cart = Cart(request)  # Initialize the cart
-    cart_products = cart.cart  # Get all items in the cart
-    cart_total = cart.get_total()  # Calculate the total price
 
-    # Ensure the cart is not empty
+def checkout(request):
+    """Process checkout and create order."""
+    cart = Cart(request)
+    cart_products = cart.cart
+    cart_total = cart.get_total()
+
     if not cart_products:
         messages.error(request, "Your cart is empty.")
         return redirect('cart')
 
-    # Prepare items data for the JSONField
     items_data = [
         {
             'product_id': int(product_id),
@@ -91,50 +91,42 @@ def checkout(request):
         for product_id, quantity in cart_products.items()
     ]
 
-    # Save the order to the database
-    new_order = Order.objects.create(
-        items=items_data,
-        total_price=cart_total
-    )
-
-    # Clear the cart after successful order placement
-    cart.cart.clear()  # Clear the cart dictionary
-    request.session['session_key'] = {}  # Clear session cart
+    new_order = Order.objects.create(items=items_data, total_price=cart_total)
+    cart.cart.clear()
+    request.session['session_key'] = {}
     request.session.modified = True
 
-    # Redirect to the order confirmation page with the new order ID
     return redirect('order_confirmation', order_id=new_order.order_id)
-    
 
 def order_confirmation(request, order_id):
+    """Display order confirmation."""
     order = get_object_or_404(Order, order_id=order_id)
     return render(request, 'order_confirmation.html', {'order': order})
-    
+
 def access_denied(request):
+    """Display access denied page."""
     return render(request, 'access_denied.html')
-  
+
 @login_required
 @user_passes_test(lambda user: user.is_superuser, login_url='access-denied/')
 def dashboard(request):
-    order = Order.objects.all()
-    contact = Contact.objects.all()
-    return render(request, 'dashboard.html', {'orders': order, 'contacts':contact})
-
+    """Display admin dashboard."""
+    orders = Order.objects.all()
+    contacts = Contact.objects.all()
+    return render(request, 'dashboard.html', {'orders': orders, 'contacts': contacts})
 
 def add_item(request):
+    """Add new food item."""
     if request.method == "POST":
-        # Get data from the request
         item_name = request.POST.get("item_name")
         description = request.POST.get("description")
         price = request.POST.get("price")
-        non_veg = request.POST.get("non_veg") == "true"  # Handle boolean conversion
-        image = request.FILES.get("image")  # Handle file uploads
+        non_veg = request.POST.get("non_veg") == "true"
+        image = request.FILES.get("image")
 
-        # Validate fields
-        if not item_name or not description or not price:
+        if not all([item_name, description, price]):
             return JsonResponse({"success": False, "error": "Missing fields"})
 
-        # Create the item
         new_item = fooditem.objects.create(
             item_name=item_name,
             description=description,
@@ -144,20 +136,23 @@ def add_item(request):
         )
         return JsonResponse({"success": True, "item_id": new_item.id})
     return JsonResponse({"success": False, "error": "Invalid request method"})
-    
+
 @login_required
 @user_passes_test(lambda user: user.is_superuser, login_url='access-denied/')
 def order_details(request):
-    order = Order.objects.all()
-    return render(request, 'order_details.html', {'orders': order})
+    """Display order details."""
+    orders = Order.objects.all()
+    return render(request, 'order_details.html', {'orders': orders})
 
 @login_required
 @user_passes_test(lambda user: user.is_superuser, login_url='access-denied/')
 def contact_queries(request):
-    contact = Contact.objects.all()
-    return render(request, 'contact_queries.html', {'contacts': contact})
+    """Display contact queries."""
+    contacts = Contact.objects.all()
+    return render(request, 'contact_queries.html', {'contacts': contacts})
 
 @login_required
 @user_passes_test(lambda user: user.is_superuser, login_url='access-denied/')
 def add_fooditem(request):
+    """Display add food item form."""
     return render(request, 'add_fooditem.html')
