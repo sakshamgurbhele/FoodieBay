@@ -17,10 +17,7 @@ class Cart:
        """Add or update product quantity in cart."""
        product_id = str(product.id)
        product_qty = int(quantity)
-       if product_id in self.cart:
-           self.cart[product_id] = int(product_qty)
-       else:
-           self.cart[product_id] = int(product_qty)
+       self.cart[product_id] = int(product_qty)
        self.session.modified = True
 
    def __len__(self):
