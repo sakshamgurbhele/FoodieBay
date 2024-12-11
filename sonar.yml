@@ -10,7 +10,7 @@ phases:
       - export PATH=$PATH:./sonar-scanner-5.0.1.3006-linux/bin/
   pre_build:
     commands:
-      - sonar-scanner -Dsonar.organization=sakshamgurbhele -Dsonar.projectKey=sakshamgurbhele_foodiebay -Dsonar.sources=. -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=96d8fb8844151c3650a3915fe10e4eae32d5e9c4 -Dsonar.python.version=3.11 -Dsonar.exclusions=**/migrations/**,**/*.pyc,**/venv/**,**/__pycache__/**
+      - sonar-scanner -Dsonar.organization=sakshamgurbhele -Dsonar.projectKey=sakshamgurbhele_foodiebay -Dsonar.sources=. -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=96d8fb8844151c3650a3915fe10e4eae32d5e9c4 -Dsonar.python.version=3.11 -Dsonar.exclusions=**/migrations/**,**/*.pyc,**/venv/**,**/__pycache__/**,*/settings.py
   build:
     commands:
       - echo Building Django Project
